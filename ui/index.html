@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Travel Planner — Multi-Agent System</title>
+  <meta name="description" content="Plan your perfect trip with AI-powered agents for flights, weather, hotels and activities." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">✈️</span>
+      <span class="logo-text">TravelAI <span class="logo-badge">Multi-Agent</span></span>
+    </div>
+    <div class="header-pills">
+      <span class="pill">🤖 LangGraph</span>
+      <span class="pill">🧠 OpenRouter</span>
+      <span class="pill">🌐 Live APIs</span>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-container">
+
+    <!-- ===================== STEP 1: Trip Details ===================== -->
+    <section id="step-1" class="wizard-step active">
+      <div class="step-header">
+        <div class="step-number">01</div>
+        <div>
+          <h1 class="step-title">Where are you headed?</h1>
+          <p class="step-subtitle">Tell us about your journey and we'll handle the rest</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+          <!-- Origin -->
+          <div class="form-group">
+            <label for="origin">🛫 Flying From</label>
+            <input id="origin" type="text" placeholder="e.g. Cairo, Egypt" autocomplete="off" />
+          </div>
+          <!-- Destination -->
+          <div class="form-group">
+            <label for="destination">🛬 Flying To</label>
+            <input id="destination" type="text" placeholder="e.g. Paris, France" autocomplete="off" />
+          </div>
+          <!-- Departure -->
+          <div class="form-group">
+            <label for="departure-date">📅 Departure Date</label>
+            <input id="departure-date" type="date" />
+          </div>
+          <!-- Return -->
+          <div class="form-group">
+            <label for="return-date">📅 Return Date</label>
+            <input id="return-date" type="date" />
+          </div>
+          <!-- Travelers -->
+          <div class="form-group">
+            <label for="num-travelers">👥 Travelers</label>
+            <div class="counter-control">
+              <button class="counter-btn" id="dec-travelers" type="button">−</button>
+              <span id="travelers-display" class="counter-value">2</span>
+              <button class="counter-btn" id="inc-travelers" type="button">+</button>
+              <input id="num-travelers" type="hidden" value="2" />
+            </div>
+          </div>
+          <!-- Budget -->
+          <div class="form-group">
+            <label for="budget">💰 Total Budget (USD)</label>
+            <div class="input-with-prefix">
+              <span class="prefix">$</span>
+              <input id="budget" type="number" min="100" step="100" placeholder="3000" />
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btn-next-1" type="button">
+            Continue <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 2: Preferences ===================== -->
+    <section id="step-2" class="wizard-step">
+      <div class="step-header">
+        <div class="step-number">02</div>
+        <div>
+          <h2 class="step-title">What do you love doing?</h2>
+          <p class="step-subtitle">Select all that interest you — our agents will tailor your experience</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="activity-grid" id="activity-grid">
+          <button class="activity-chip" data-value="museums">🏛️ Museums</button>
+          <button class="activity-chip" data-value="food tours">🍜 Food Tours</button>
+          <button class="activity-chip" data-value="hiking">🥾 Hiking</button>
+          <button class="activity-chip" data-value="beaches">🏖️ Beaches</button>
+          <button class="activity-chip" data-value="nightlife">🎵 Nightlife</button>
+          <button class="activity-chip" data-value="shopping">🛍️ Shopping</button>
+          <button class="activity-chip" data-value="history">🏰 History</button>
+          <button class="activity-chip" data-value="art galleries">🎨 Art</button>
+          <button class="activity-chip" data-value="adventure sports">🪂 Adventure</button>
+          <button class="activity-chip" data-value="spa wellness">💆 Spa & Wellness</button>
+          <button class="activity-chip" data-value="photography">📸 Photography</button>
+          <button class="activity-chip" data-value="local markets">🛒 Local Markets</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" id="btn-back-2" type="button">← Back</button>
+          <button class="btn btn-primary" id="btn-launch" type="button">
+            🚀 Launch AI Agents
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 3: Loading ===================== -->
+    <section id="step-3" class="wizard-step">
+      <div class="step-header center-header">
+        <h2 class="step-title">AI Agents Working...</h2>
+        <p class="step-subtitle">Our specialized agents are researching your trip in real-time</p>
+      </div>
+
+      <div class="card agents-card">
+        <div class="agent-list" id="agent-list">
+          <div class="agent-item" id="agent-flight">
+            <div class="agent-icon">✈️</div>
+            <div class="agent-info">
+              <div class="agent-name">Flight Agent</div>
+              <div class="agent-desc">Searching Aviationstack for flights</div>
+            </div>
+            <div class="agent-status idle">Waiting...</div>
+          </div>
+          <div class="agent-item" id="agent-weather">
+            <div class="agent-icon">🌤️</div>
+            <div class="agent-info">
+              <div class="agent-name">Weather Agent</div>
+              <div class="agent-desc">Fetching OpenWeatherMap forecast</div>
+            </div>
+            <div class="agent-status idle">Waiting...</div>
+          </div>
+          <div class="agent-item" id="agent-hotel">
+            <div class="agent-icon">🏨</div>
+            <div class="agent-info">
+              <div class="agent-name">Hotel Agent</div>
+              <div class="agent-desc">Searching hotels via Tavily MCP</div>
+            </div>
+            <div class="agent-status idle">Waiting...</div>
+          </div>
+          <div class="agent-item" id="agent-activities">
+            <div class="agent-icon">🎯</div>
+            <div class="agent-info">
+              <div class="agent-name">Activities Agent</div>
+              <div class="agent-desc">Discovering experiences via Tavily MCP</div>
+            </div>
+            <div class="agent-status idle">Waiting...</div>
+          </div>
+          <div class="agent-item" id="agent-planner">
+            <div class="agent-icon">📋</div>
+            <div class="agent-info">
+              <div class="agent-name">Planner Agent</div>
+              <div class="agent-desc">Synthesizing your perfect itinerary</div>
+            </div>
+            <div class="agent-status idle">Waiting...</div>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="progress-label" id="progress-label">Initialising agents...</div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 4: Plan Review ===================== -->
+    <section id="step-4" class="wizard-step">
+      <div class="step-header">
+        <div class="step-number">04</div>
+        <div>
+          <h2 class="step-title">Your Travel Plan</h2>
+          <p class="step-subtitle" id="plan-subtitle">Review draft — approve or request changes</p>
+        </div>
+      </div>
+
+      <div class="card plan-card">
+        <div class="plan-content markdown-body" id="plan-content">
+          <!-- Rendered Markdown plan goes here -->
+        </div>
+
+        <div class="revision-badge" id="revision-badge" style="display:none">
+          Revision <span id="revision-num">1</span>
+        </div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar" id="action-bar">
+        <div class="action-bar-left">
+          <button class="btn btn-success" id="btn-approve">
+            ✅ Approve This Plan
+          </button>
+        </div>
+        <div class="action-bar-right">
+          <button class="btn btn-outline" id="btn-revise-toggle">
+            ✏️ Request Changes
+          </button>
+        </div>
+      </div>
+
+      <!-- Revision Panel -->
+      <div class="revision-panel" id="revision-panel" style="display:none">
+        <div class="card">
+          <label for="feedback-input" class="revision-label">✏️ What would you like to change?</label>
+          <textarea
+            id="feedback-input"
+            rows="4"
+            placeholder="e.g. 'Please find cheaper hotels' or 'Add more outdoor activities on day 3' or 'I prefer morning flights'..."
+          ></textarea>
+          <div class="btn-row">
+            <button class="btn btn-outline" id="btn-cancel-revision">Cancel</button>
+            <button class="btn btn-primary" id="btn-submit-revision">
+              🔄 Regenerate Plan
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STEP 5: Approved ===================== -->
+    <section id="step-5" class="wizard-step">
+      <div class="success-container">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Your Trip is Planned!</h2>
+        <p class="success-subtitle">Your personalised travel itinerary has been approved and saved.</p>
+        <div class="card final-plan-card">
+          <div class="plan-content markdown-body" id="final-plan-content"></div>
+        </div>
+        <div class="btn-row center-row">
+          <button class="btn btn-primary" id="btn-new-trip">✈️ Plan Another Trip</button>
+          <button class="btn btn-outline" id="btn-print">🖨️ Print Plan</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Error Toast -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

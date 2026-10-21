@@ -1,0 +1,7 @@
+Aviationstack for 
+weather -> openweather used stdio bec one agent used
+
+tavily for search http using its server
+
+postgres
+langsmith
